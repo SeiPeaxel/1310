@@ -4,8 +4,8 @@ import { isProcessingMintQueue, executionQueue, updateProcessingMintQueueStatus,
 import  {removeWallet} from "./index.js";
 
 const lightHouseContractAddress = "sei1hjsqrfdg2hvwl3gacg4fkznurf36usrv7rkzkyh29wz3guuzeh0snslz7d";
-const PeaxelFeeAddress = "sei1yw7zdsqsx5gwljyxk4cx5f56elvrj0tw0wlqmp";
-const PeaxelFeeAmount = "100000"; //0.1 SEI per successful mint
+const peaxelFeeAddress = "sei1yw7zdsqsx5gwljyxk4cx5f56elvrj0tw0wlqmp";
+const peaxelFeeAmount = "100000"; //0.1 SEI per successful mint
 const mintLimitTotal = parseInt(process.env.MINT_LIMIT_TOTAL, 10);
 const walletMintCounts = {};
 
@@ -120,7 +120,7 @@ export async function processQueue() {
   updateProcessingMintQueueStatus(true, senderAddress);
 
   try{
-    console.log(`${senderAddress},${getFormattedTimestamp()}:Pea-Sniping...`);
+    console.log(`${senderAddress},${getFormattedTimestamp()}:Snipeaing...`);
     await executeContract(senderAddress, hashedAddress, merkleProof, contractAddress, groupName, unitPrice, needsToPayFee, signingCosmWasmClient);
   } catch (error) {
     console.log(`${senderAddress},${getFormattedTimestamp()}:Snipe unsuccessful! ` + error.message);
@@ -189,22 +189,22 @@ export async function executeContract(senderAddress, hashedAddress, merkleProof,
           walletMintCounts[senderAddress] = (walletMintCounts[senderAddress] || 0) + 1;
           if(needsToPayFee){
             try {
-              const finalPeaxelFeeAmount = parseFloat(PeaxelFeeAmount) * currentMintCount;
-              const convertedFeeAmount = (finalPeaxelFeeAmount / 1000000).toString();
-              console.log(`${senderAddress},${getFormattedTimestamp()}:You do not hold enough Peaxel...A fee of ${convertedFeeAmount} SEI is being sent as there were ${currentMintCount} succesful mints...`)
+              const finalpeaxelFeeAmount = parseFloat(peaxelFeeAmount) * currentMintCount;
+              const convertedFeeAmount = (finalpeaxelFeeAmount / 1000000).toString();
+              console.log(`${senderAddress},${getFormattedTimestamp()}:You do not hold enough peaxel...A fee of ${convertedFeeAmount} SEI is being sent as there were ${currentMintCount} succesful mints...`)
               const feeFunds = [{
                 denom: 'usei',
-                amount: finalPeaxelFeeAmount.toString()
+                amount: finalpeaxelFeeAmount.toString()
               }];
-              const feeResult = await signingCosmWasmClient.sendTokens(senderAddress, PeaxelFeeAddress, feeFunds, "auto", "fee for Peaxel mint sniper");
+              const feeResult = await signingCosmWasmClient.sendTokens(senderAddress, peaxelFeeAddress, feeFunds, "auto", "fee for peaxel mint sniper");
               if(feeResult.transactionHash){
-                console.log(`${senderAddress},${getFormattedTimestamp()}:Peaxel fee sent. Thank you.`)
+                console.log(`${senderAddress},${getFormattedTimestamp()}:peaxel fee sent. Thank you.`)
               }
               else{
-                console.log(`${senderAddress},${getFormattedTimestamp()}:Peaxel fee not sent due to an issue. You have not been charged.`)
+                console.log(`${senderAddress},${getFormattedTimestamp()}:peaxel fee not sent due to an issue. You have not been charged.`)
               }
             }catch (error){
-              console.log(`${senderAddress},${getFormattedTimestamp()}:Peaxel fee transfer unsuccesful: " + ${error.message} + ". You have not been charged.`);
+              console.log(`${senderAddress},${getFormattedTimestamp()}:peaxel fee transfer unsuccesful: " + ${error.message} + ". You have not been charged.`);
             }finally {
            
             }
