@@ -42,7 +42,7 @@ async function processConfig(config) {
             console.log("Checking if you hold any Peaxel...");
             const isHolder = await getHoldings(senderAddress, signingCosmWasmClient);
             let needsToPayFee = true;
-            if(isHolder >= 3){
+            if(isHolder >= 5){
                 console.log("You hold at least 3 Peaxels so you will not be charged any fees for every successful mint!");
                 needsToPayFee = false;
             } else {
