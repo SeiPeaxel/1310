@@ -17,7 +17,7 @@ export async function buySnipea(senderAddress, signingCosmWasmClient) {
         }
         const palletListingResponseData = await palletListingResponse.json();
         if (palletListingResponseData.count > 0 && !isProcessingBuyQueue) {
-          console.log(`${getFormattedTimestamp()}:Listings valid! Pea-Sniping...`)
+          console.log(`${getFormattedTimestamp()}:Listings valid! Snipeaing...`)
           executionQueue.push({ senderAddress, palletListingResponseData, signingCosmWasmClient});
           processQueue();
         }
@@ -42,7 +42,7 @@ export async function buySnipea(senderAddress, signingCosmWasmClient) {
           const palletListingResponseData = await palletListingResponse.json();
     
           if (isValidListing(palletListingResponseData) && !isProcessingBuyQueue) {
-            console.log(`${getFormattedTimestamp()}:Listing valid for token id: ${tokenId}! Pea-Sniping...`)
+            console.log(`${getFormattedTimestamp()}:Listing valid for token id: ${tokenId}! Snipeaing...`)
             executionQueue.push({ senderAddress, palletListingResponseData, signingCosmWasmClient});
             processQueue();
           }
@@ -103,7 +103,7 @@ export async function processQueue() {
           amount: finalPalletAmount.toString()
         }];
         
-        const result = await signingCosmWasmClient.execute(senderAddress, "sei152u2u0lqc27428cuf8dx48k8saua74m6nql5kgvsu4rfeqm547rsnhy4y9", msg, "auto", "Snipea", totalFunds );
+        const result = await signingCosmWasmClient.execute(senderAddress, "sei152u2u0lqc27428cuf8dx48k8saua74m6nql5kgvsu4rfeqm547rsnhy4y9", msg, "auto", "snipea", totalFunds );
         if(result.transactionHash){
           boughtTokenIds.add(palletListingResponseData.tokens[0].id_int);
           console.log(getFormattedTimestamp() + ":Snipe successful for token id:" + palletListingResponseData.tokens[0].id_int + ", Tx hash: " + result.transactionHash);
@@ -158,7 +158,7 @@ export async function processQueue() {
             amount: totalAmount.toString()
         }];
 
-        const result = await signingCosmWasmClient.execute(senderAddress, "sei152u2u0lqc27428cuf8dx48k8saua74m6nql5kgvsu4rfeqm547rsnhy4y9", batchBids, "auto", "Snipea", totalFunds);
+        const result = await signingCosmWasmClient.execute(senderAddress, "sei152u2u0lqc27428cuf8dx48k8saua74m6nql5kgvsu4rfeqm547rsnhy4y9", batchBids, "auto", "snipea", totalFunds);
   
         if (result.transactionHash) {
             console.log(getFormattedTimestamp() + ":Snipe successful! Tx hash: " + result.transactionHash);
@@ -197,7 +197,7 @@ export async function processQueue() {
             amount: finalAmount.toString()
         }];
    
-        const result = await signingCosmWasmClient.execute(senderAddress, "sei152u2u0lqc27428cuf8dx48k8saua74m6nql5kgvsu4rfeqm547rsnhy4y9", bid, "auto", "Snipea", totalFunds);
+        const result = await signingCosmWasmClient.execute(senderAddress, "sei152u2u0lqc27428cuf8dx48k8saua74m6nql5kgvsu4rfeqm547rsnhy4y9", bid, "auto", "snipea", totalFunds);
   
         if (result.transactionHash) {
             boughtTokenIds.add(token.id_int);
