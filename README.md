@@ -1,4 +1,4 @@
-# snipea
+# Snipea
 Snipe NFTs on SEI.
 
 # Features
